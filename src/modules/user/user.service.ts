@@ -4,13 +4,13 @@ import Exception from '../../utils/exception';
 
 const prisma = new PrismaClient();
 
-type CreateUserRequest = {
+type CreateUserParams = {
   email: string;
   password: string;
   profilePic?: string;
 };
 
-export const createUser = async ({ email, password, profilePic }: CreateUserRequest) => {
+export const createUser = async ({ email, password, profilePic }: CreateUserParams) => {
   if (!email || !password) 
     throw new Exception(422, "Email and password are required.")
   

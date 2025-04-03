@@ -2,15 +2,22 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { PrismaClient } from '@prisma/client';
 import Exception from '../../utils/exception';
+import { Response } from 'express';
 
 const prisma = new PrismaClient();
 
-type LoginRequest = {
-  email: string;
-  password: string;
+type LoginParams = {
+  email: string
+  password: string
 };
 
-export async function authenticateUser({ email, password }: LoginRequest) {
+export type AuthUser = {
+  id: number
+  email: string
+  profilePic?: string
+};
+
+export async function authenticateUser({ email, password }: LoginParams) {
   if (!email || !password) 
     throw new Exception(422, "Email and password are required.")
 
@@ -32,4 +39,12 @@ export async function authenticateUser({ email, password }: LoginRequest) {
   )
 
   return { user, token };
+}
+
+export function authUser(res: Response) {
+  return res.locals.auth
+}
+
+export function authUserId(res: Response) {
+  return res.locals.auth.userId
 }

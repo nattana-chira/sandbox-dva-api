@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { createUser } from './user.service';
-import { authenticateUser } from './auth.service';
+import { authenticateUser, authUser, authUserId } from './auth.service';
 import auth from './auth.middleware';
 
 const router = Router();
@@ -38,10 +38,16 @@ router.post('/api/auth/login', async (req: Request, res: Response, next: NextFun
   }
 })
  
-router.get('/api/testauth', auth.required, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/api/auth/check', auth.required, async (req: Request, res: Response, next: NextFunction) => {
   try {
     res.json({
-      message: 'auth ok'
+      message: 'Auth Check successful',
+      authHeader: req.header('Authorization'),
+      user: {
+        id: authUserId(res),
+        email: authUser(res).email,
+        authUser: authUser(res)
+      }
     })
   } catch (error) {
     next(error)

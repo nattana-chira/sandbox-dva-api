@@ -3,6 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import userRoutes from './modules/user/user.routes';
+import friendRoutes from './modules/friend/friend.routes';
 import Exception from './utils/exception';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(userRoutes);
+app.use(friendRoutes);
 
 app.get('/', (req, res) => {
   res.status(200).json({ status: 'Server is running' })
@@ -49,7 +51,7 @@ app.use((
       }
     }
 
-    const authExceptions = ["UnauthorizedError", "JsonWebTokenError"]
+    const authExceptions = ["UnauthorizedError", "JsonWebTokenError", "TokenExpiredError"]
 
     if (authExceptions.includes(err.name)) {
       errorResponse.error.message = 'missing authorization credentials'

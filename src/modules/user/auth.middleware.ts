@@ -9,7 +9,7 @@ const verifyTokenMiddleware = (req: Request, res: Response, next: NextFunction) 
       throw new Exception(401, "Access denied. No token provided.")
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "")
-    res.locals.user = decoded
+    res.locals.auth = decoded
 
     next()
   } catch (error) {
