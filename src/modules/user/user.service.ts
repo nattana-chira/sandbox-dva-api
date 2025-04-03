@@ -1,15 +1,14 @@
 import { PrismaClient } from '@prisma/client';
-import Exception from '../../utils/Exception';
 import bcrypt from 'bcryptjs';
+import Exception from '../../utils/exception';
 
 const prisma = new PrismaClient();
 
-interface CreateUserRequest {
+type CreateUserRequest = {
   email: string;
   password: string;
   profilePic?: string;
-}
-
+};
 
 export const createUser = async ({ email, password, profilePic }: CreateUserRequest) => {
   if (!email || !password) 

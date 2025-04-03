@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 
 import userRoutes from './modules/user/user.routes';
-import Exception from './utils/Exception';
+import Exception from './utils/exception';
 
 const app = express();
 app.use(cors());
@@ -12,9 +12,22 @@ app.use(bodyParser.json());
 
 app.use(userRoutes);
 
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).json({ status: 'Server is running' })
-});
+})
+
+const notFoundHandler = (req: Request, res: Response) => {
+  res.status(404).json({
+    error: {
+      status: "error",
+      name: "not_found",
+      message: 'Route not found',  
+      code: 404,     
+    }
+  })
+}
+
+app.use(notFoundHandler);
 
 app.use((
   err: Error | Exception,
@@ -32,11 +45,13 @@ app.use((
         status: "error",
         name: err?.name || "unknown",
         message: err.message,  
-        code: errorCode,     
+        code: errorCode
       }
     }
 
-    if (err.name === 'UnauthorizedError') {
+    const authExceptions = ["UnauthorizedError", "JsonWebTokenError"]
+
+    if (authExceptions.includes(err.name)) {
       errorResponse.error.message = 'missing authorization credentials'
       res.status(401).json(errorResponse)
   
@@ -46,7 +61,17 @@ app.use((
     } else if (err) {
       res.status(500).json(errorResponse);
     }
+    else {
+      res.status(500).json({
+        error: {
+          status: "error",
+          name: "unknown",
+          message: "unknown_error",  
+          code: 500
+        }
+      })
+    }
   }
-});
+})
 
 export default app;
