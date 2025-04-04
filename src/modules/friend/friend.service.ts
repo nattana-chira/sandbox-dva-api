@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Exception from "../../utils/exception";
+import { AcceptFriendRequestParams, CreateFriendRequestParams, GetFriendsParams, GetPendingFriendRequestsParams, RejectFriendRequestParams } from "./friend.interfaces";
+
 
 const prisma = new PrismaClient();
 
@@ -11,53 +13,59 @@ const FRIEND_REQUEST_STATUS = {
 
 // type FriendRequestStatus = (typeof FRIEND_REQUEST_STATUS)[keyof typeof FRIEND_REQUEST_STATUS];
 
-type GetFriendsParams = {
-  userId: string
-};
-
-type CreateFriendRequestParams = {
-  senderId: string
-  receiverId: string
-};
-
-type AcceptFriendRequestParams = {
-  id: string
-  receiverId: string
-};
-
-type RejectFriendRequestParams = {
-  id: string
-  receiverId: string
-};
-
 export const getFriends = async ({ userId }: GetFriendsParams) => {
   if (!userId) 
     throw new Exception(422, "Invalid parameter.")
 
-  const users = await prisma.user.findMany({
+  return await prisma.user.findMany({
     where: {
       hasFriends: {
         some: { friendId: Number(userId) }
-      },
-    },
+      }
+    }
   })
-
-  return users
 }
 
-export const sendFriendRequest = async ({ senderId, receiverId }: CreateFriendRequestParams) => {
-  if (!senderId || !receiverId || Number(senderId) === Number(receiverId)) 
+export const getPendingFriendRequests = async ({ receiverId }: GetPendingFriendRequestsParams) => {
+  if (!receiverId) 
     throw new Exception(422, "Invalid parameter.")
+
+  return await prisma.friendRequest.findMany({
+    where: {
+      receiverId: Number(receiverId),
+      status: FRIEND_REQUEST_STATUS.PENDING
+    },
+    include: {
+      sender: true
+    }
+  })
+}
+
+export const sendFriendRequest = async ({ senderId, email }: CreateFriendRequestParams) => {
+  if (!senderId || !email) 
+    throw new Exception(422, "Invalid parameter.")
+
+  const user = await prisma.user.findFirst({
+    where:  { 
+      email
+    }
+  })
+
+  if (!user) 
+    throw new Exception(400, "User not found.")
+
+  if (Number(user.id) === Number(senderId))
+    throw new Exception(400, "Cannot add self as friend.")
 
   const pendingFriendRequest = await prisma.friendRequest.findFirst({
     where: { 
       OR: [
         { 
           senderId: Number(senderId),
-          receiverId: Number(receiverId)
+          receiverId: Number(user.id)
         },
         { 
-          senderId: Number(receiverId),
+          senderId: Number(user.id),
           receiverId: Number(senderId)
         }
       ],
@@ -71,7 +79,7 @@ export const sendFriendRequest = async ({ senderId, receiverId }: CreateFriendRe
   const alreadyBeFriended = await prisma.userFriends.findFirst({
     where:  { 
       userId: Number(senderId),
-      friendId: Number(receiverId)
+      friendId: Number(user.id)
     }
   })
 
@@ -81,7 +89,7 @@ export const sendFriendRequest = async ({ senderId, receiverId }: CreateFriendRe
   const friendRequest = await prisma.friendRequest.create({
     data: {
       senderId: Number(senderId),
-      receiverId: Number(receiverId),
+      receiverId: Number(user.id),
       status: FRIEND_REQUEST_STATUS.PENDING
     }
   })

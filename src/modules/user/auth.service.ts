@@ -11,11 +11,45 @@ type LoginParams = {
   password: string
 };
 
+type RegisterUserParams = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  profilePic?: string | null
+};
+
 export type AuthUser = {
   id: number
   email: string
   profilePic?: string
 };
+
+export const registerUser = async ({ firstName, lastName, email, password, profilePic }: RegisterUserParams) => {
+  if (!email || !password) 
+    throw new Exception(422, "Email and password are required.")
+  
+  const existingUser = await prisma.user.findUnique({
+    where: { email }
+  })
+
+  if (existingUser) 
+    throw new Exception(422, "Email already in used.'")
+  
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  const user = await prisma.user.create({
+    data: {
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      profilePic
+    }
+  })
+
+  return user
+}
 
 export async function authenticateUser({ email, password }: LoginParams) {
   if (!email || !password) 

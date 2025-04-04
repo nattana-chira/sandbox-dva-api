@@ -1,20 +1,25 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { createUser } from './user.service';
-import { authenticateUser, authUser, authUserId } from './auth.service';
+import { authenticateUser, authUser, authUserId, registerUser } from './auth.service';
 import auth from './auth.middleware';
+import { upload } from '../../utils/fileUpload';
 
 const router = Router();
 
-router.post('/api/users', async (req: Request, res: Response, next: NextFunction) => {
+router.post(
+  '/api/auth/register', 
+  upload.single("file"), 
+  async (req: Request, res: Response, next: NextFunction
+) => {
   try {
-    const { email, password, profilePic } = req.body
-    const user = await createUser({ email, password, profilePic })
+    const profilePic = req.file ? `/uploads/${req.file.filename}` : null;
+    const { firstName, lastName, email, password } = req.body
+    const user = await registerUser({ firstName, lastName, email, password, profilePic })
 
     res.json({
       id: user.id,
       email: user.email,
       profilePic: user.profilePic
-    })
+    }) 
   } catch (error) {
     next(error)
   }
@@ -29,6 +34,8 @@ router.post('/api/auth/login', async (req: Request, res: Response, next: NextFun
       message: 'Login successful',
       user: {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email
       },
       token
