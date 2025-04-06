@@ -49,9 +49,9 @@ project/
 ├── uploads/               # Public assets (for Next.js frontend)
 ├── src/                   # Source code
 │   ├── modules/           # Seperate each modules to prevent coupling contains routes, services, interfaces, tests
-|   |   ├── chat/         
-|   |   ├── friend/
-|   |   ├── user/
+│   │   ├── chat/         
+│   │   ├── friend/
+│   │   └── user/
 │   ├── utils/             # Helper functions
 │   ├── config.ts          # Constant variable for .env
 │   ├── app.ts             # App middleware
