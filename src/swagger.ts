@@ -11,11 +11,6 @@ const options: swaggerJsdoc.Options = {
       version: '1.0.0',
       description: 'API documentation'
     },
-    servers: [
-      {
-        url: 'http://localhost:5000'
-      }
-    ],
     components: {
       securitySchemes: {
         bearerAuth: {
