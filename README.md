@@ -31,7 +31,7 @@ Server running on http://localhost:5000
 Swagger running on http://localhost:5000/api-docs
 
 ## Description  
-- **NodeJs + Express** for back end server
+- **NodeJs + Express** for back end server -- NestJs is also interesting choice but it would not fit for small size sandbox project
 - **MySqlite** for quick development
 - **WebSocket** for real-time communication  
 - **Prisma** for database ORM  
