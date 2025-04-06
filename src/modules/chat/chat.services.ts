@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import Exception from "../../utils/exception";
 import { GetChatMessagesParams, SendChatMessageParams } from "./chat.interfaces";
-
-const prisma = new PrismaClient();
+import prisma from '../../prisma.client'
 
 export const getChatMessages = async ({ senderId, receiverId }: GetChatMessagesParams) => {
   if (!senderId || !receiverId) 

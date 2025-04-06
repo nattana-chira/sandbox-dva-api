@@ -1,16 +1,12 @@
-import { PrismaClient } from "@prisma/client";
 import Exception from "../../utils/exception";
 import { AcceptFriendRequestParams, CreateFriendRequestParams, GetFriendsParams, GetPendingFriendRequestsParams, RejectFriendRequestParams } from "./friend.interfaces";
-
-const prisma = new PrismaClient();
+import prisma from '../../prisma.client'
 
 const FRIEND_REQUEST_STATUS = {
   PENDING: "pending",
   ACCEPTED: "accepted",
   REJECTED: "rejected"
 }
-
-// type FriendRequestStatus = (typeof FRIEND_REQUEST_STATUS)[keyof typeof FRIEND_REQUEST_STATUS];
 
 export const getFriends = async ({ userId }: GetFriendsParams) => {
   if (!userId) 
@@ -150,7 +146,7 @@ export const rejectFriendRequest = async ({ id, receiverId }: RejectFriendReques
   return friendRequest
 }
 
-const findPendingRequest = async (
+export const findPendingRequest = async (
   { id, receiverId }: 
   { id: string | number, receiverId: string | number }
 ) => {

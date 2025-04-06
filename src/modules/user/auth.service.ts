@@ -1,11 +1,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
 import Exception from '../../utils/exception';
 import { Response } from 'express';
 import { config } from '../../config';
-
-const prisma = new PrismaClient();
+import prisma from '../../prisma.client'
 
 type LoginParams = {
   email: string
@@ -35,7 +33,7 @@ export const registerUser = async ({ firstName, lastName, email, password, profi
   })
 
   if (existingUser) 
-    throw new Exception(422, "Email already in used.'")
+    throw new Exception(422, "Email already in used.")
   
   const hashedPassword = await bcrypt.hash(password, 10)
 
