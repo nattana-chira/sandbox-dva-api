@@ -4,7 +4,7 @@
   
 - npx prisma generate
   
-* if you dont have npx
+## if you dont have npx
 
 - npm install -g npx
   
