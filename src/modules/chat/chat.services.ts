@@ -1,4 +1,4 @@
-import Exception from "../../utils/exception";
+import Exception from "../../utils/baseException";
 import { GetChatMessagesParams, SendChatMessageParams } from "./chat.interfaces";
 import prisma from '../../prisma.client'
 

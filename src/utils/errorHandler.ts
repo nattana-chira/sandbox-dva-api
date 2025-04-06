@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import Exception from "./exception";
+import Exception from "./baseException";
 
 // Handle 404 Not found
 export function notFoundErrorHandlerMiddleware(req: Request, res: Response) {

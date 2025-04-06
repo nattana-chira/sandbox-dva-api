@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Exception from '../../utils/exception';
+import Exception from '../../utils/baseException';
 import { Response } from 'express';
 import { config } from '../../config';
 import prisma from '../../prisma.client'

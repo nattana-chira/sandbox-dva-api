@@ -1,6 +1,6 @@
 import { sendFriendRequest } from '../friend.service';
 import { PrismaClient } from '@prisma/client';
-import Exception from '../../../utils/exception';
+import Exception from '../../../utils/baseException';
 
 // Mock Prisma Client
 jest.mock('@prisma/client', () => {

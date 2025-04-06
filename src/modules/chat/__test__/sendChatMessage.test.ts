@@ -1,6 +1,6 @@
 import { sendChatMessage } from '../chat.services';
 import { PrismaClient } from '@prisma/client';
-import Exception from '../../../utils/exception';
+import Exception from '../../../utils/baseException';
 
 jest.mock('@prisma/client', () => {
   const mPrismaClient = {

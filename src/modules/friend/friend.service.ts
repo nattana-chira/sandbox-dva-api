@@ -1,4 +1,4 @@
-import Exception from "../../utils/exception";
+import Exception from "../../utils/baseException";
 import { AcceptFriendRequestParams, CreateFriendRequestParams, GetFriendsParams, GetPendingFriendRequestsParams, RejectFriendRequestParams } from "./friend.interfaces";
 import prisma from '../../prisma.client'
 

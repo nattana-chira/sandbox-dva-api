@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
-import Exception from '../../utils/exception';
+import Exception from '../../utils/baseException';
 import { config } from '../../config';
 
 const verifyTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {

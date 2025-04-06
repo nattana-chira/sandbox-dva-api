@@ -2,7 +2,7 @@ import { Server, WebSocket } from 'ws';
 import app from './app';
 import http from 'http';
 import jwt from 'jsonwebtoken';
-import Exception from './utils/exception';
+import Exception from './utils/baseException';
 import { config } from './config';
 import { sendChatMessage } from './modules/chat/chat.services';
 

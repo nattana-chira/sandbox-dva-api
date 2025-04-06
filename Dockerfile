@@ -13,8 +13,14 @@ RUN npm install
 # Install typescript globally
 RUN npm install -g typescript ts-node
 
+# COPY entrypoint.sh .
+
+
 # Copy the rest of your application code
 COPY . .
+
+
+ENTRYPOINT ["./entrypoint.sh"]
 
 # Expose the port your app will run on (example: 3000)
 EXPOSE 5000
