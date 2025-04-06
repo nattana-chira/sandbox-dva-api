@@ -37,7 +37,7 @@ Swagger running on http://localhost:5000/api-docs
 - **Prisma** for database ORM -- Prisma is suitable for small project and support functional style, unlike TypeORM
 - **JsonWebToken** for authorization -- Simple 
 - **Multer** for file upload management -- Reduce development time for file upload feature
-- **Jest** for unit testing -- Good choice for unit testing
+- **Jest** for unit testing -- Best choice for unit testing
 - **Swagger** for API documentation -- Easy integrated with NodeJS + JSDoc, better than PostMan
 - **Docker** for deployment
 
