@@ -6,6 +6,7 @@ import chatRoutes from './modules/chat/chat.routes';
 import userRoutes from './modules/user/user.routes';
 import friendRoutes from './modules/friend/friend.routes';
 import { mainErrorHandlerMiddleware, notFoundErrorHandlerMiddleware } from './utils/errorHandler';
+import { setupSwagger } from './swagger';
 
 const app = express();
 app.use(cors());
@@ -16,11 +17,13 @@ app.use(chatRoutes);
 app.use(userRoutes);
 app.use(friendRoutes);
 
-app.use("/uploads", express.static("uploads"));
+app.use('/uploads', express.static('uploads'))
 
 app.get('/', (req, res) => {
   res.status(200).json({ status: 'Server is running' })
 })
+
+setupSwagger(app)
 
 app.use(notFoundErrorHandlerMiddleware)
 app.use(mainErrorHandlerMiddleware)

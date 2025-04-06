@@ -51,11 +51,11 @@ webSocketServer.on('connection', (socket, req) => {
       userIds: [...clients.keys()]
     }))
 
-    // Store connection
+    // Store client connection
     clients.set(userId, socket)
     console.log(`User ${userId} connected.`)
 
-    // On each message sender client send to server, deliver the message back to receiver client
+    // On each socket message sender client send to server, deliver the message back to receiver client
     socket.on('message', async (rawMsg) => {
       const socketMessage: SocketMessage = JSON.parse(rawMsg.toString())
       console.log("socketMessage data", socketMessage)
@@ -65,8 +65,9 @@ webSocketServer.on('connection', (socket, req) => {
       if (!targetClient || targetClient.readyState !== WebSocket.OPEN)
         return false
 
+      // If socket send chat message data
       if (socketMessage.type === 'message') {
-        // Save chat message to DB
+        // Then save chat message to DB
         const chatMessage = await sendChatMessage({ 
           senderId: userId, 
           receiverId: socketMessage.receiverId, 
@@ -79,7 +80,7 @@ webSocketServer.on('connection', (socket, req) => {
         }))
 
       } else {
-        // Deliver message back to receiver client
+        // Else just deliver message back to receiver client
         targetClient.send(JSON.stringify(socketMessage))
       }
     })
