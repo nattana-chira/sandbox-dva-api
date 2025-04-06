@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "5000:5000"  # Exposes port 3000 on your local machine to port 3000 inside the container
+    volumes:
+      - .:/usr/src/app  # Mounts the current directory to the container to allow code changes in real-time
+    environment:
+      - NODE_ENV=development
