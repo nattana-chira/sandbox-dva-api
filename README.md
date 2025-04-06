@@ -3,7 +3,7 @@
 - npx prisma generate
   
 ** if you dont have npx
-npm install -g npx
+- npm install -g npx
 
 ** if you already have npx
 - npx prisma migrate dev
