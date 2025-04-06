@@ -39,9 +39,9 @@ Swagger running on http://localhost:5000/api-docs
 - **Multer** for file upload management -- Reduce development time for file upload feature
 - **Jest** for unit testing -- Best choice for unit testing
 - **Swagger** for API documentation -- Easy integrated with NodeJS + JSDoc, better than PostMan
-- **Docker** for deployment
+- **Docker** for deployment  
 
-# For Postgres version, please checkout Branch 'feature/integrate-postgres'
+** For Postgres version, please checkout Branch 'feature/integrate-postgres' **
 
 ## Project Structure
 ```bash
