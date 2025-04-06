@@ -41,6 +41,7 @@ Swagger running on http://localhost:5000/api-docs
 - **Swagger** for API documentation -- Easy integrated with NodeJS + JSDoc, better than PostMan
 - **Docker** for deployment
 
+## Project Structure
 ```bash
 project/
 ├── prisma/                # Prisma schema and migrations
