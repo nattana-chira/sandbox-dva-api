@@ -31,12 +31,12 @@ Server running on http://localhost:5000
 Swagger running on http://localhost:5000/api-docs
 
 ## Description  
-NodeJs + Express for back end server  
-WebSocket for real-time communication  
-Prisma for database ORM  
-JsonWebToken for authorization  
-Multer for file upload management  
-Jest for unit testing  
-Swagger for API documentation  
+- NodeJs + Express for back end server  
+- WebSocket for real-time communication  
+- Prisma for database ORM  
+- JsonWebToken for authorization  
+- Multer for file upload management  
+- Jest for unit testing  
+- Swagger for API documentation  
 
 
