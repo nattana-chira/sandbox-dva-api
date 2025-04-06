@@ -8,7 +8,7 @@ export function notFoundErrorHandlerMiddleware(req: Request, res: Response) {
       status: "error",
       name: "not_found",
       message: 'Route not found',  
-      code: 404,     
+      code: 404
     }
   })
 }

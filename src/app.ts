@@ -1,10 +1,10 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
+import chatRoutes from './modules/chat/chat.routes';
 import userRoutes from './modules/user/user.routes';
 import friendRoutes from './modules/friend/friend.routes';
-import Exception from './utils/exception';
 import { mainErrorHandlerMiddleware, notFoundErrorHandlerMiddleware } from './utils/errorHandler';
 
 const app = express();
@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
+app.use(chatRoutes);
 app.use(userRoutes);
 app.use(friendRoutes);
 

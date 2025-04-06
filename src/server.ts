@@ -1,7 +1,8 @@
-import app from './app';
+import { config } from './config';
+import { server } from './web-socket';
 
-const PORT = process.env.PORT || 5000;
+const PORT = config.SERVER_PORT;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

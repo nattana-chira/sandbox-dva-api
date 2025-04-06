@@ -1,22 +1,22 @@
 export type GetFriendsParams = {
-  userId: string
+  userId: string | number
 };
 
 export type GetPendingFriendRequestsParams = {
-  receiverId: string
+  receiverId: string | number
 };
 
 export type CreateFriendRequestParams = {
-  senderId: string
+  senderId: string | number
   email: string
 };
 
 export type AcceptFriendRequestParams = {
-  id: string
-  receiverId: string
+  id: string | number
+  receiverId: string | number
 };
 
 export type RejectFriendRequestParams = {
-  id: string
-  receiverId: string
+  id: string | number
+  receiverId: string | number
 };

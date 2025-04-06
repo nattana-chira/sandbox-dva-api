@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import Exception from '../../utils/exception';
+import { config } from '../../config';
 
 const verifyTokenMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -8,7 +9,7 @@ const verifyTokenMiddleware = (req: Request, res: Response, next: NextFunction) 
     if (!token) 
       throw new Exception(401, "Access denied. No token provided.")
     
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "")
+    const decoded = jwt.verify(token, config.JWT_SECRET)
     res.locals.auth = decoded
 
     next()

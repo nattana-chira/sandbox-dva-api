@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import Exception from "../../utils/exception";
 import { AcceptFriendRequestParams, CreateFriendRequestParams, GetFriendsParams, GetPendingFriendRequestsParams, RejectFriendRequestParams } from "./friend.interfaces";
 
-
 const prisma = new PrismaClient();
 
 const FRIEND_REQUEST_STATUS = {
@@ -45,41 +44,39 @@ export const sendFriendRequest = async ({ senderId, email }: CreateFriendRequest
   if (!senderId || !email) 
     throw new Exception(422, "Invalid parameter.")
 
+  senderId = Number(senderId)
+
+  // Check if user exists by email
   const user = await prisma.user.findFirst({
-    where:  { 
-      email
-    }
+    where: { email }
   })
 
   if (!user) 
     throw new Exception(400, "User not found.")
 
-  if (Number(user.id) === Number(senderId))
+  // Check if user add self as friend
+  if (user.id === senderId)
     throw new Exception(400, "Cannot add self as friend.")
 
-  const pendingFriendRequest = await prisma.friendRequest.findFirst({
+  // Check if request is duplicated
+  const duplicatedRequest = await prisma.friendRequest.findFirst({
     where: { 
       OR: [
-        { 
-          senderId: Number(senderId),
-          receiverId: Number(user.id)
-        },
-        { 
-          senderId: Number(user.id),
-          receiverId: Number(senderId)
-        }
+        { senderId: senderId, receiverId: user.id },
+        { senderId: user.id, receiverId: senderId }
       ],
       status: FRIEND_REQUEST_STATUS.PENDING
     }
   })
 
-  if (pendingFriendRequest) 
+  if (duplicatedRequest) 
     throw new Exception(400, "Already sent pending friend request to this user.")
 
+  // Check if be friend already
   const alreadyBeFriended = await prisma.userFriends.findFirst({
     where:  { 
-      userId: Number(senderId),
-      friendId: Number(user.id)
+      userId: senderId,
+      friendId: user.id
     }
   })
 
@@ -88,8 +85,8 @@ export const sendFriendRequest = async ({ senderId, email }: CreateFriendRequest
 
   const friendRequest = await prisma.friendRequest.create({
     data: {
-      senderId: Number(senderId),
-      receiverId: Number(user.id),
+      senderId: senderId,
+      receiverId: user.id,
       status: FRIEND_REQUEST_STATUS.PENDING
     }
   })
@@ -101,9 +98,12 @@ export const acceptFriendRequest = async ({ id, receiverId }: AcceptFriendReques
   if (!id || !receiverId) 
     throw new Exception(422, "Invalid parameter.")
 
-  const pendingFriendRequest = await findOrFailPendingRequest({ id, receiverId })
+  const pendingFriendRequest = await findPendingRequest({ id, receiverId })
+  const { senderId } = pendingFriendRequest
+  receiverId = Number(receiverId)
 
   return await prisma.$transaction(async (tx) => {
+    // Mark friend request as accepted
     const friendRequest = await tx.friendRequest.update({
       where: {
         id: Number(id)
@@ -113,18 +113,21 @@ export const acceptFriendRequest = async ({ id, receiverId }: AcceptFriendReques
       }
     })
 
-    await tx.userFriends.create({
-      data: {
-        userId: pendingFriendRequest.senderId,
-        friendId: pendingFriendRequest.receiverId
-      }
+    // Mark both users as friends
+    await tx.userFriends.createMany({
+      data: [
+        { userId: senderId, friendId: receiverId },
+        { userId: receiverId, friendId: senderId }
+      ]
     })
 
-    await tx.userFriends.create({
-      data: {
-        userId: pendingFriendRequest.receiverId,
-        friendId: pendingFriendRequest.senderId
-      }
+    // Create 1 on 1 chat
+    const chat = await tx.chat.create({})
+    await tx.chatMember.createMany({
+      data: [
+        { userId: senderId, chatId: chat.id },
+        { userId: receiverId, chatId: chat.id }
+      ]
     })
 
     return friendRequest
@@ -135,12 +138,10 @@ export const rejectFriendRequest = async ({ id, receiverId }: RejectFriendReques
   if (!id || !receiverId)
     throw new Exception(422, "Invalid parameter.")
 
-  await findOrFailPendingRequest({ id, receiverId })
+  await findPendingRequest({ id, receiverId })
 
   const friendRequest = await prisma.friendRequest.update({
-    where: {
-      id: Number(id)
-    },
+    where: { id: Number(id) },
     data: {
       status: FRIEND_REQUEST_STATUS.REJECTED
     }
@@ -149,7 +150,7 @@ export const rejectFriendRequest = async ({ id, receiverId }: RejectFriendReques
   return friendRequest
 }
 
-const findOrFailPendingRequest = async (
+const findPendingRequest = async (
   { id, receiverId }: 
   { id: string | number, receiverId: string | number }
 ) => {
