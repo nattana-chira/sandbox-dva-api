@@ -41,6 +41,8 @@ Swagger running on http://localhost:5000/api-docs
 - **Swagger** for API documentation -- Easy integrated with NodeJS + JSDoc, better than PostMan
 - **Docker** for deployment
 
+# For Postgres version, please checkout Branch 'feature/integrate-postgres'
+
 ## Project Structure
 ```bash
 project/
