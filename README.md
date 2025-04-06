@@ -32,13 +32,13 @@ Swagger running on http://localhost:5000/api-docs
 
 ## Description  
 - **NodeJs + Express** for back end server -- NestJs is also interesting choice but it would not fit for small size sandbox project
-- **MySqlite** for quick development
-- **WebSocket** for real-time communication  
-- **Prisma** for database ORM  
-- **JsonWebToken** for authorization  
-- **Multer** for file upload management  
-- **Jest** for unit testing  
-- **Swagger** for API documentation
+- **MySqlite** for file system database -- I pick this choice purely because of very quick development and no need to set up
+- **WebSocket** for real-time communication -- I just want to try native WebSocket without help functions from SocketIO
+- **Prisma** for database ORM -- Prisma is suitable for small project and support functional style, unlike TypeORM
+- **JsonWebToken** for authorization -- Simple 
+- **Multer** for file upload management -- Reduce development time for file upload feature
+- **Jest** for unit testing -- Good choice for unit testing
+- **Swagger** for API documentation -- Easy integrated with NodeJS + JSDoc, better than PostMan
 - **Docker** for deployment
 
 ```bash
