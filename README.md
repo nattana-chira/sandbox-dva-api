@@ -1,13 +1,13 @@
-npm install
-cp .env.example .env
-npx prisma generate
+- npm install
+- cp .env.example .env
+- npx prisma generate
 * if you dont have npx
-npm install -g npx
-npx prisma migrate dev
+- npm install -g npx
+- npx prisma migrate dev
 
-npm run dev
+- npm run dev
 
 Server running on http://localhost:5000
 Swagger running on http://localhost:5000/api-docs
 
-docker-compose up --build
+- docker-compose up --build
