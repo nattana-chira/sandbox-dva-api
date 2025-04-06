@@ -28,8 +28,9 @@ docker-compose up --build
 ```
 
 Server running on http://localhost:5000  
-Swagger running on http://localhost:5000/api-docs
-Live Swagger running on http://13.251.157.164:5000/api-docs/
+Swagger running on http://localhost:5000/api-docs  
+Live Swagger running on http://13.251.157.164:5000/api-docs/  
+*beware F5 will change url from http to https
 
 ## Description  
 - **NodeJs + Express** for back end server -- NestJs is also interesting choice but it would not fit for small size sandbox project
