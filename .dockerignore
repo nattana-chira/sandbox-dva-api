@@ -4,3 +4,4 @@ dist
 *.env
 docker-compose.yml
 Dockerfile
+prisma/*.db
