@@ -1,11 +1,11 @@
 - npm install
 - cp .env.example .env
-- npx prisma generate
-  
+
 ** if you dont have npx
 - npm install -g npx
 
 ** if you already have npx
+- npx prisma generate
 - npx prisma migrate dev
 - npm run dev
 
