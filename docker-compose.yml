@@ -8,3 +8,19 @@ services:
       - .:/usr/src/app  # Mounts the current directory to the container to allow code changes in real-time
     environment:
       - NODE_ENV=development
+
+  postgres:
+    image: postgres:16
+    container_name: my-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dev
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      
+volumes:
+  postgres-data:
