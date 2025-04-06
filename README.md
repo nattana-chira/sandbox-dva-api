@@ -31,7 +31,8 @@ Server running on http://localhost:5000
 Swagger running on http://localhost:5000/api-docs
 
 ## Description  
-- NodeJs + Express for back end server  
+- NodeJs + Express for back end server
+- MySqlite for quick development
 - WebSocket for real-time communication  
 - Prisma for database ORM  
 - JsonWebToken for authorization  
