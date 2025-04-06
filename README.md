@@ -41,6 +41,7 @@ Swagger running on http://localhost:5000/api-docs
 - Swagger for API documentation
 - Docker for deployment
 
+```bash
 your-project/
 ├── node_modules/          # Installed dependencies
 ├── prisma/                # Prisma schema and migrations
@@ -63,4 +64,5 @@ your-project/
 ├── package.json           # Project metadata and scripts
 ├── README.md              # This file
 └── tsconfig.json          # TypeScript configuration
+```
 
