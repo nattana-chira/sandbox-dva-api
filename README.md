@@ -1,3 +1,4 @@
+## Getting Started  
 Copy .env
 ```bash
 cp .env.example .env
