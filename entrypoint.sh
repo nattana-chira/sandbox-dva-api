@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Run Prisma commands
+# Run Prisma command
 npx prisma generate
 npx prisma migrate dev
 
